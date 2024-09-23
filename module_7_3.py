@@ -24,32 +24,26 @@ class WordsFinder:
         return all_words
 
     def find(self, word):
-        dict_ = self.get_all_words()
-        list_ = []
-        for name, words in dict_.items():
-            for w in words:
-                if word.lower() in w:
-                    index = words.index(w)
-                    list_.append(self.file_name)
-                    list_.append(index+1)
-                    break
-        return list_
+        word_acc = {}
+
+        for file_name, words in self.get_all_words().items():
+            if word.lower() in words:
+                position = words.index(word.lower()) + 1  # Позиция с 1
+                word_acc[file_name] = position
+
+        return word_acc
 
     def count(self, word):
-        dict_ = self.get_all_words()
-        list_ = []
-        count = 0
-        for name, words in dict_.items():
-            for w in words:
-                if word.lower() in w:
-                    count += 1
-        list_.append(self.file_name)
-        list_.append(count)
-        return list_
+        result = {}
+        for name, words in self.get_all_words().items():
+            count = words.count(word.lower())
+            if count > 0:
+                result[name] = count
+
+        return result
 
 
 finder2 = WordsFinder('test.txt')
 print(finder2.get_all_words()) # Все слова
 print(finder2.find('TEXT')) # 3 слово по счёту
 print(finder2.count('teXT')) # 4 слова teXT в тексте всего
-
